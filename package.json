@@ -4,6 +4,7 @@
   "description": "a hypermedia parser and navigator",
   "main": "index.js",
   "scripts": {
+    "lint": "standard",
     "test": "mocha --require babel-polyfill --compilers babel-core/register --recursive \"test/**/*.spec.js\""
   },
   "author": "",
@@ -19,5 +20,8 @@
     "chai": "^4.1.0",
     "mocha": "^3.4.2",
     "standard": "^10.0.2"
+  },
+  "standard": {
+    "globals": [ "describe", "it" ]
   }
 }
