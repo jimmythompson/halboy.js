@@ -49,9 +49,11 @@ describe('Resource', () => {
   it('should add and fetch embedded resources', () => {
     const embeddedResource =
       new Resource()
-        .addLink('self', {href: '/orders/123'})
-        .addLink('ea:basket', {href: '/baskets/98712'})
-        .addLink('ea:customer', {href: '/customers/7809'})
+        .addLinks({
+          self: { href: '/orders/123' },
+          'ea:basket': { href: '/baskets/98712' },
+          'ea:customer': { href: '/customers/7809' }
+        })
 
     const resource =
       new Resource()
@@ -64,15 +66,19 @@ describe('Resource', () => {
   it('should add a list of a resources', () => {
     const firstEmbeddedResource =
       new Resource()
-        .addLink('self', {href: '/orders/123'})
-        .addLink('ea:basket', {href: '/baskets/98712'})
-        .addLink('ea:customer', {href: '/customers/7809'})
+        .addLinks({
+          self: { href: '/orders/123' },
+          'ea:basket': { href: '/baskets/98712' },
+          'ea:customer': { href: '/customers/7809' }
+        })
 
     const secondEmbeddedResource =
       new Resource()
-        .addLink('self', {href: '/orders/124'})
-        .addLink('ea:basket', {href: '/baskets/97213'})
-        .addLink('ea:customer', {href: '/customers/12369'})
+        .addLinks({
+          self: { href: '/orders/124' },
+          'ea:basket': { href: '/baskets/98713' },
+          'ea:customer': { href: '/customers/12369' }
+        })
 
     const resource =
       new Resource()
@@ -91,21 +97,27 @@ describe('Resource', () => {
   it('should stack resources with under the same key', () => {
     const firstEmbeddedResource =
       new Resource()
-        .addLink('self', {href: '/orders/123'})
-        .addLink('ea:basket', {href: '/baskets/98712'})
-        .addLink('ea:customer', {href: '/customers/7809'})
+        .addLinks({
+          self: { href: '/orders/123' },
+          'ea:basket': { href: '/baskets/98712' },
+          'ea:customer': { href: '/customers/7809' }
+        })
 
     const secondEmbeddedResource =
       new Resource()
-        .addLink('self', {href: '/orders/124'})
-        .addLink('ea:basket', {href: '/baskets/97213'})
-        .addLink('ea:customer', {href: '/customers/12369'})
+        .addLinks({
+          self: { href: '/orders/124' },
+          'ea:basket': { href: '/baskets/98713' },
+          'ea:customer': { href: '/customers/12369' }
+        })
 
     const thirdEmbeddedResource =
       new Resource()
-        .addLink('self', {href: '/orders/125'})
-        .addLink('ea:basket', {href: '/baskets/98716'})
-        .addLink('ea:customer', {href: '/customers/2416'})
+        .addLinks({
+          self: { href: '/orders/125' },
+          'ea:basket': { href: '/baskets/98716' },
+          'ea:customer': { href: '/customers/2416' }
+        })
 
     const resource =
       new Resource()
