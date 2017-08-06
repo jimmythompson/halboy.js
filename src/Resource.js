@@ -34,10 +34,10 @@ export default class Resource {
     return this
   }
 
-  addResource (rel, value) {
+  addResource (key, value) {
     this.embedded = {
       ...this.embedded,
-      [rel]: value
+      [key]: createOrAppend(this.embedded[key], value)
     }
 
     return this

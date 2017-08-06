@@ -47,4 +47,66 @@ describe('Resource', () => {
     expect(resource.getResource('ea:order'))
       .to.deep.equal(embeddedResource)
   })
+
+  it('should add a list of a resources', () => {
+    const firstEmbeddedResource =
+      new Resource()
+        .addLink('self', {href: '/orders/123'})
+        .addLink('ea:basket', {href: '/baskets/98712'})
+        .addLink('ea:customer', {href: '/customers/7809'})
+
+    const secondEmbeddedResource =
+      new Resource()
+        .addLink('self', {href: '/orders/124'})
+        .addLink('ea:basket', {href: '/baskets/97213'})
+        .addLink('ea:customer', {href: '/customers/12369'})
+
+    const resource =
+      new Resource()
+        .addResource('ea:order', [
+          firstEmbeddedResource,
+          secondEmbeddedResource
+        ])
+
+    expect(resource.getResource('ea:order'))
+      .to.deep.equal([
+        firstEmbeddedResource,
+        secondEmbeddedResource
+      ])
+  })
+
+  it('should stack resources with under the same key', () => {
+    const firstEmbeddedResource =
+      new Resource()
+        .addLink('self', {href: '/orders/123'})
+        .addLink('ea:basket', {href: '/baskets/98712'})
+        .addLink('ea:customer', {href: '/customers/7809'})
+
+    const secondEmbeddedResource =
+      new Resource()
+        .addLink('self', {href: '/orders/124'})
+        .addLink('ea:basket', {href: '/baskets/97213'})
+        .addLink('ea:customer', {href: '/customers/12369'})
+
+    const thirdEmbeddedResource =
+      new Resource()
+        .addLink('self', {href: '/orders/125'})
+        .addLink('ea:basket', {href: '/baskets/98716'})
+        .addLink('ea:customer', {href: '/customers/2416'})
+
+    const resource =
+      new Resource()
+        .addResource('ea:order', [
+          firstEmbeddedResource,
+          secondEmbeddedResource
+        ])
+        .addResource('ea:order', thirdEmbeddedResource)
+
+    expect(resource.getResource('ea:order'))
+      .to.deep.equal([
+        firstEmbeddedResource,
+        secondEmbeddedResource,
+        thirdEmbeddedResource
+      ])
+  })
 })
