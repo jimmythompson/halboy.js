@@ -2,7 +2,7 @@
   "name": "halboy",
   "version": "0.0.1",
   "description": "a hypermedia parser and navigator",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
     "lint": "standard",
