@@ -1,4 +1,4 @@
-import { toPairs } from 'ramda'
+import { isEmpty, fromPairs, toPairs } from 'ramda'
 
 const flatten = (arr) =>
   arr.reduce((result, next) =>
@@ -8,6 +8,29 @@ const flatten = (arr) =>
 
 const createOrAppend = (left, right) =>
   left ? flatten([left, right]) : right
+
+const resourcesToObject = (resources) => {
+  if (isEmpty(resources)) {
+    return {}
+  }
+
+  const transformedResources = fromPairs(toPairs(resources)
+    .map(([key, value]) =>
+      Array.isArray(value)
+        ? [key, value.map(v => v.toObject())]
+        : [key, value.toObject()]
+    ))
+
+  return {_embedded: transformedResources}
+}
+
+const linksToObject = (links) => {
+  if (isEmpty(links)) {
+    return {}
+  }
+
+  return {_links: links}
+}
 
 export default class Resource {
   constructor () {
@@ -73,5 +96,13 @@ export default class Resource {
     return this.applyToResource(
       map, (resource, [key, value]) =>
         resource.addProperty(key, value))
+  }
+
+  toObject () {
+    return {
+      ...linksToObject(this.links),
+      ...resourcesToObject(this.embedded),
+      ...this.properties
+    }
   }
 }
