@@ -2,7 +2,7 @@
   "name": "halboy",
   "version": "0.0.1",
   "description": "a hypermedia parser and navigator",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "lint": "standard",
     "test": "mocha --require babel-polyfill --compilers babel-core/register --recursive \"test/**/*.spec.js\""
