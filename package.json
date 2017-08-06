@@ -19,6 +19,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.0",
+    "faker": "^4.1.0",
     "mocha": "^3.4.2",
     "standard": "^10.0.2"
   },
@@ -28,5 +29,8 @@
       "it"
     ],
     "parser": "babel-eslint"
+  },
+  "dependencies": {
+    "ramda": "^0.24.1"
   }
 }
