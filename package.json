@@ -4,8 +4,10 @@
   "description": "a hypermedia parser and navigator",
   "main": "src/index.js",
   "scripts": {
+    "build": "babel src --out-dir dist",
     "lint": "standard",
-    "test": "mocha --require babel-polyfill --compilers babel-core/register --recursive \"test/**/*.spec.js\""
+    "test": "mocha --require babel-polyfill --compilers babel-core/register --recursive \"test/**/*.spec.js\"",
+    "prepublish": "npm run build"
   },
   "author": "",
   "license": "MIT",
