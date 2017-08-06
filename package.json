@@ -30,5 +30,7 @@
     ],
     "parser": "babel-eslint"
   },
-  "dependencies": {}
+  "dependencies": {
+    "ramda": "^0.24.1"
+  }
 }

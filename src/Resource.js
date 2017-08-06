@@ -1,3 +1,5 @@
+import { toPairs } from 'ramda'
+
 const flatten = (arr) =>
   arr.reduce((result, next) =>
     result.concat(Array.isArray(next)
@@ -32,6 +34,12 @@ export default class Resource {
     }
 
     return this
+  }
+
+  addLinks (relValueMap) {
+    return toPairs(relValueMap)
+      .reduce((resource, [rel, value]) =>
+        resource.addLink(rel, value), this)
   }
 
   addResource (key, value) {

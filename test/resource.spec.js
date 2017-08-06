@@ -24,6 +24,19 @@ describe('Resource', () => {
       ])
   })
 
+  it('should add multiple links at once', () => {
+    const resource =
+      new Resource()
+      .addLinks({
+        self: { href: '/orders/123' },
+        'ea:basket': { href: '/baskets/98712' },
+        'ea:customer': { href: '/customers/7809' }
+      })
+
+    expect(resource.getHref('ea:basket'))
+      .to.equal('/baskets/98712')
+  })
+
   it('should fetch hrefs', () => {
     const resource =
       new Resource()
