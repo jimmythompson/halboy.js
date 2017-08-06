@@ -13,6 +13,7 @@ export default class Resource {
   constructor () {
     this.links = {}
     this.embedded = {}
+    this.properties = {}
   }
 
   getLink (rel) {
@@ -27,6 +28,10 @@ export default class Resource {
     return this.embedded[key]
   }
 
+  getProperty (key) {
+    return this.properties[key]
+  }
+
   addLink (rel, value) {
     this.links = {
       ...this.links,
@@ -36,10 +41,14 @@ export default class Resource {
     return this
   }
 
-  addLinks (relValueMap) {
-    return toPairs(relValueMap)
-      .reduce((resource, [rel, value]) =>
-        resource.addLink(rel, value), this)
+  applyToResource (map, fn) {
+    return toPairs(map).reduce(fn, this)
+  }
+
+  addLinks (map) {
+    return this.applyToResource(
+      map, (resource, [rel, value]) =>
+        resource.addLink(rel, value))
   }
 
   addResource (key, value) {
@@ -49,5 +58,20 @@ export default class Resource {
     }
 
     return this
+  }
+
+  addProperty (key, value) {
+    this.properties = {
+      ...this.properties,
+      [key]: value
+    }
+
+    return this
+  }
+
+  addProperties (map) {
+    return this.applyToResource(
+      map, (resource, [key, value]) =>
+        resource.addProperty(key, value))
   }
 }

@@ -134,4 +134,25 @@ describe('Resource', () => {
         thirdEmbeddedResource
       ])
   })
+
+  it('should add and retrieve properties', () => {
+    const resource =
+      new Resource()
+        .addProperty('currently-processing', 14)
+
+    expect(resource.getProperty('currently-processing'))
+      .to.equal(14)
+  })
+
+  it('should add multiple properties', () => {
+    const resource =
+      new Resource()
+        .addProperties({
+          'currently-processing': 14,
+          'shipped-today': 20
+        })
+
+    expect(resource.getProperty('currently-processing')).to.equal(14)
+    expect(resource.getProperty('shipped-today')).to.equal(20)
+  })
 })
