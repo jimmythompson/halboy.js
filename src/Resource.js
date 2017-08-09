@@ -32,7 +32,16 @@ const linksToObject = (links) => {
   return {_links: links}
 }
 
+const objectToLinks = (obj) => {
+  return obj._links || {}
+}
+
 class Resource {
+  static fromObject(obj) {
+    return new Resource()
+      .addLinks(objectToLinks(obj))
+  }
+
   constructor () {
     this.links = {}
     this.embedded = {}
