@@ -1,5 +1,5 @@
 import Resource from './Resource'
 
-export default {
+module.exports = {
   Resource
 }

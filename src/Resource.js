@@ -32,7 +32,7 @@ const linksToObject = (links) => {
   return {_links: links}
 }
 
-export default class Resource {
+class Resource {
   constructor () {
     this.links = {}
     this.embedded = {}
@@ -106,3 +106,5 @@ export default class Resource {
     }
   }
 }
+
+module.exports = Resource
