@@ -125,4 +125,40 @@ describe('Resource', () => {
       shippedToday: 20
     })
   })
+
+  it('should render doubly embedded resources', () => {
+    const purchaserResource =
+      new Resource()
+        .addLink('self', { href: '/customers/1' })
+
+    const orderResource =
+      new Resource()
+        .addResource('customer', purchaserResource)
+        .addLink('self', { href: '/orders/123' })
+
+    const resource =
+      new Resource()
+        .addResource('ea:order', orderResource)
+
+    expect(resource.toObject()).to.deep.equal({
+      _embedded: {
+        'ea:order': {
+          _links: {
+            self: {
+              href: '/orders/123'
+            }
+          },
+          _embedded: {
+            customer: {
+              _links: {
+                self: {
+                  href: '/customers/1'
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+  })
 })

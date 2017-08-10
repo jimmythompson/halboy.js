@@ -32,14 +32,29 @@ const linksToObject = (links) => {
   return {_links: links}
 }
 
-const objectToLinks = (obj) => {
-  return obj._links || {}
+const objectToLinks = (_links) => {
+  return _links || {}
+}
+
+const objectToResources = (_embedded) => {
+  if (isEmpty(_embedded)) {
+    return {}
+  }
+
+  return fromPairs(toPairs(_embedded)
+    .map(([key, value]) =>
+      Array.isArray(value)
+        ? [key, value.map(v => Resource.fromObject(v))]
+        : [key, Resource.fromObject(value)]
+    ))
 }
 
 class Resource {
-  static fromObject(obj) {
+  static fromObject({ _links, _embedded, ...properties }) {
     return new Resource()
-      .addLinks(objectToLinks(obj))
+      .addLinks(objectToLinks(_links))
+      .addResources(objectToResources(_embedded))
+      .addProperties(properties)
   }
 
   constructor () {
@@ -90,6 +105,12 @@ class Resource {
     }
 
     return this
+  }
+
+  addResources (map) {
+    return this.applyToResource(
+      map, (resource, [key, value]) =>
+        resource.addResource(key, value))
   }
 
   addProperty (key, value) {

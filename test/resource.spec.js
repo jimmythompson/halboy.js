@@ -19,8 +19,8 @@ describe('Resource', () => {
 
     expect(resource.getLink('ea:admin'))
       .to.deep.equal([
-      {href: '/admins/2', title: 'Fred'},
-      {href: '/admins/5', title: 'Kate'}
+        {href: '/admins/2', title: 'Fred'},
+        {href: '/admins/5', title: 'Kate'}
       ])
   })
 
@@ -89,9 +89,9 @@ describe('Resource', () => {
 
     expect(resource.getResource('ea:order'))
       .to.deep.equal([
-        firstEmbeddedResource,
-        secondEmbeddedResource
-      ])
+      firstEmbeddedResource,
+      secondEmbeddedResource
+    ])
   })
 
   it('should stack resources with under the same key', () => {
@@ -129,10 +129,10 @@ describe('Resource', () => {
 
     expect(resource.getResource('ea:order'))
       .to.deep.equal([
-        firstEmbeddedResource,
-        secondEmbeddedResource,
-        thirdEmbeddedResource
-      ])
+      firstEmbeddedResource,
+      secondEmbeddedResource,
+      thirdEmbeddedResource
+    ])
   })
 
   it('should add and retrieve properties', () => {
@@ -160,9 +160,9 @@ describe('Resource', () => {
     const firstEmbeddedResource =
       new Resource()
         .addLinks({
-          self: { href: '/orders/123' },
-          'ea:basket': { href: '/baskets/98712' },
-          'ea:customer': { href: '/customers/7809' }
+          self: {href: '/orders/123'},
+          'ea:basket': {href: '/baskets/98712'},
+          'ea:customer': {href: '/customers/7809'}
         })
         .addProperties({
           total: 30.0,
@@ -173,9 +173,9 @@ describe('Resource', () => {
     const secondEmbeddedResource =
       new Resource()
         .addLinks({
-          self: { href: '/orders/124' },
-          'ea:basket': { href: '/baskets/97213' },
-          'ea:customer': { href: '/customers/12369' }
+          self: {href: '/orders/124'},
+          'ea:basket': {href: '/baskets/97213'},
+          'ea:customer': {href: '/customers/12369'}
         })
         .addProperties({
           total: 20.0,
@@ -186,20 +186,20 @@ describe('Resource', () => {
     const resource =
       new Resource()
         .addLinks({
-          self: { href: '/orders' },
+          self: {href: '/orders'},
           curies: {
             name: 'ea',
             href: 'http://example.com/docs/rels/{rel}',
             templated: true
           },
-          next: { href: '/orders?page=2' },
+          next: {href: '/orders?page=2'},
           'ea:find': {
             href: '/orders{?id}',
             templated: true
           },
           'ea:admin': [
-            { href: '/admins/2', title: 'Fred' },
-            { href: '/admins/5', title: 'Kate' }
+            {href: '/admins/2', title: 'Fred'},
+            {href: '/admins/5', title: 'Kate'}
           ]
         })
         .addResource('ea:order', [

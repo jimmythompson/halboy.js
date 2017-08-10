@@ -49,4 +49,102 @@ describe('Resource', () => {
             {href: '/admins/5'}
           ]))
   })
+
+  it('should parse embedded resources', () => {
+    const resource = Resource.fromObject({
+      _embedded: {
+        'ea:order': {
+          _links: {
+            self: {
+              href: '/orders/123'
+            }
+          }
+        }
+      }
+    })
+
+    expect(resource).to.deep.equal(
+      new Resource()
+        .addResource('ea:order',
+          new Resource()
+            .addLink('self', { href: '/orders/123' })))
+  })
+
+  it('should parse doubly embedded resources', () => {
+    const resource = Resource.fromObject({
+      _embedded: {
+        'ea:order': {
+          _links: {
+            self: {
+              href: '/orders/123'
+            }
+          },
+          _embedded: {
+            customer: {
+              _links: {
+                self: {
+                  href: '/customers/1'
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+
+    const customerResource = new Resource()
+      .addLink('self', { href: '/customers/1' })
+
+    const orderResource = new Resource()
+      .addLink('self', { href: '/orders/123' })
+      .addResource('customer', customerResource)
+
+    expect(resource).to.deep.equal(
+      new Resource()
+        .addResource('ea:order', orderResource))
+  })
+
+  it('should parse arrays of embedded resources', () => {
+    const resource = Resource.fromObject({
+      _embedded: {
+        'ea:order': [{
+          _links: {
+            self: {
+              href: '/orders/123'
+            }
+          }
+        }, {
+          _links: {
+            self: {
+              href: '/orders/124'
+            }
+          }
+        }]
+      }
+    })
+
+    const firstResource = new Resource()
+      .addLink('self', { href: '/orders/123' })
+
+    const secondResource = new Resource()
+      .addLink('self', { href: '/orders/124' })
+
+    expect(resource).to.deep.equal(
+      new Resource()
+        .addResource('ea:order', [
+          firstResource,
+          secondResource
+        ]))
+  })
+
+  it('should parse properties', () => {
+    const resource = Resource.fromObject({
+      total: 20.0
+    })
+
+    expect(resource).to.deep.equal(
+      new Resource()
+        .addProperty('total', 20.0))
+  })
 })
