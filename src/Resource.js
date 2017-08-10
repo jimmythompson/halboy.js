@@ -79,6 +79,10 @@ class Resource {
     return this.properties[key]
   }
 
+  getProperties () {
+    return this.properties
+  }
+
   addLink (rel, value) {
     this.links = {
       ...this.links,

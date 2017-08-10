@@ -148,12 +148,14 @@ describe('Resource', () => {
     const resource =
       new Resource()
         .addProperties({
-          'currentlyProcessing': 14,
-          'shippedToday': 20
+          currentlyProcessing: 14,
+          shippedToday: 20
         })
 
-    expect(resource.getProperty('currentlyProcessing')).to.equal(14)
-    expect(resource.getProperty('shippedToday')).to.equal(20)
+    expect(resource.getProperties()).to.deep.equal({
+      currentlyProcessing: 14,
+      shippedToday: 20
+    })
   })
 
   it('should export to an object', () => {
