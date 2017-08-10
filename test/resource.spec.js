@@ -89,9 +89,9 @@ describe('Resource', () => {
 
     expect(resource.getResource('ea:order'))
       .to.deep.equal([
-      firstEmbeddedResource,
-      secondEmbeddedResource
-    ])
+        firstEmbeddedResource,
+        secondEmbeddedResource
+      ])
   })
 
   it('should stack resources with under the same key', () => {
@@ -129,10 +129,10 @@ describe('Resource', () => {
 
     expect(resource.getResource('ea:order'))
       .to.deep.equal([
-      firstEmbeddedResource,
-      secondEmbeddedResource,
-      thirdEmbeddedResource
-    ])
+        firstEmbeddedResource,
+        secondEmbeddedResource,
+        thirdEmbeddedResource
+      ])
   })
 
   it('should add and retrieve properties', () => {

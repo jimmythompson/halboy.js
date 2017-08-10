@@ -50,7 +50,7 @@ const objectToResources = (_embedded) => {
 }
 
 class Resource {
-  static fromObject({ _links, _embedded, ...properties }) {
+  static fromObject ({ _links, _embedded, ...properties }) {
     return new Resource()
       .addLinks(objectToLinks(_links))
       .addResources(objectToResources(_embedded))

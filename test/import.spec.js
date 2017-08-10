@@ -47,7 +47,7 @@ describe('Resource', () => {
         .addLink('ea:admin', [
             {href: '/admins/2'},
             {href: '/admins/5'}
-          ]))
+        ]))
   })
 
   it('should parse embedded resources', () => {
@@ -91,7 +91,6 @@ describe('Resource', () => {
         }
       }
     })
-
 
     const customerResource = new Resource()
       .addLink('self', { href: '/customers/1' })
