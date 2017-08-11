@@ -11,6 +11,15 @@ describe('Resource', () => {
       .to.deep.equal({href: '/orders'})
   })
 
+  it('should add and fetch links', () => {
+    const resource =
+      new Resource()
+        .addLink('self', '/orders')
+
+    expect(resource.getLink('self'))
+      .to.deep.equal({href: '/orders'})
+  })
+
   it('should stack links with the same key', () => {
     const resource =
       new Resource()

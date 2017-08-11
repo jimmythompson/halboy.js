@@ -84,6 +84,10 @@ class Resource {
   }
 
   addLink (rel, value) {
+    if (typeof value === 'string') {
+      return this.addLink(rel, { href: value })
+    }
+
     this.links = {
       ...this.links,
       [rel]: createOrAppend(this.links[rel], value)
