@@ -55,3 +55,45 @@ resource
   .getProperty('price')
 // 25.48
 ```
+
+### Marshalling
+
+You can create HAL resources from plain JS objects, and vice versa.
+
+```js
+import { Resource } from 'halboy'
+
+const itemResources = [
+  new Resource()
+    .addLink('self', '/items/534')
+    .addProperty('price', 25.48)
+]
+
+const resource =
+    new Resource()
+      .addLink('self', '/orders/123')
+      .addLink('creator', '/users/rob')
+      .addResource('items', itemResources)
+      .addProperty('state', 'dispatching')
+
+resource.toObject()
+// {
+//   _links: {
+//     self: { href: '/orders/123' },
+//     creator: { href: '/users/rob' }
+//   },
+//   _embedded: {
+//     items: [{
+//       _links: {
+//         self: { href: '/items/534' }
+//       },
+//       price: 25.48 
+//     }]
+//   },
+//   state: 'dispatching'
+// }
+
+Resource.fromObject(resource.toObject())
+  .getHref('self')
+// '/orders/123'
+```
