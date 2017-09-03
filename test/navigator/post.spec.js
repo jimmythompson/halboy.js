@@ -17,20 +17,13 @@ describe('Navigator', () => {
       users: { href: '/users' }
     })
 
-    nock(baseUrl)
-      .post('/users', {
-        name: 'Thomas'
-      })
-      .reply(201, undefined, {
-        Location: `${baseUrl}/users/thomas`
-      })
+    api.onPostRedirect(baseUrl, '/users', {
+      name: 'Thomas'
+    }, '/users/thomas')
 
-    nock(baseUrl)
-      .get('/users/thomas')
-      .reply(200,
-        new Resource()
-          .addProperty('name', 'Thomas')
-          .toObject())
+    api.onGet(baseUrl, '/users/thomas',
+      new Resource()
+        .addProperty('name', 'Thomas'))
 
     const discoveryResult = await Navigator.discover(baseUrl)
     const result = await discoveryResult.post('users', {
@@ -41,5 +34,48 @@ describe('Navigator', () => {
 
     expect(result.resource().getProperty('name'))
       .to.deep.equal('Thomas')
+  })
+
+  it('should be able to use template params when creating resources', async () => {
+    api.onDiscover(baseUrl, {
+      useritems: { href: '/users/{id}/items', templated: true }
+    })
+
+    api.onPostRedirect(baseUrl, '/users/thomas/items', {
+      name: 'Sponge'
+    }, '/users/thomas/items/1')
+
+    api.onGet(baseUrl, '/users/thomas/items/1',
+      new Resource()
+        .addProperty('name', 'Sponge'))
+
+    const discoveryResult = await Navigator.discover(baseUrl)
+    const result = await discoveryResult.post('useritems', {
+      name: 'Sponge'
+    }, {
+      id: 'thomas'
+    })
+
+    expect(result.status()).to.equal(200)
+
+    expect(result.resource().getProperty('name'))
+      .to.deep.equal('Sponge')
+  })
+
+  it('should not follow location headers when the status is not 201', async () => {
+    api.onDiscover(baseUrl, {
+      users: { href: '/users{?admin}', templated: true }
+    })
+
+    nock(baseUrl)
+      .post('/users', { name: 'Thomas' })
+      .reply(400)
+
+    const discoveryResult = await Navigator.discover(baseUrl)
+    const result = await discoveryResult.post('users', {
+      name: 'Thomas'
+    })
+
+    expect(result.status()).to.equal(400)
   })
 })

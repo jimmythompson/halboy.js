@@ -22,15 +22,13 @@ describe('Navigator', () => {
       users: { href: '/users{?admin}', templated: true }
     })
 
-    nock(baseUrl).get('/users')
-      .reply(200,
-        new Resource()
-          .addResource('users', [
-            createUser({ id: 'fred', name: 'Fred' }),
-            createUser({ id: 'sue', name: 'Sue' }),
-            createUser({ id: 'mary', name: 'Mary' })
-          ])
-          .toObject())
+    api.onGet(baseUrl, '/users',
+      new Resource()
+        .addResource('users', [
+          createUser({ id: 'fred', name: 'Fred' }),
+          createUser({ id: 'sue', name: 'Sue' }),
+          createUser({ id: 'mary', name: 'Mary' })
+        ]))
 
     const discoveryResult = await Navigator.discover(baseUrl)
     const result = await discoveryResult.get('users')
