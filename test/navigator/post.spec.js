@@ -78,4 +78,49 @@ describe('Navigator', () => {
 
     expect(result.status()).to.equal(400)
   })
+
+  it('should not follow location headers when the options say not to', async () => {
+    api.onDiscover(baseUrl, {
+      users: { href: '/users' }
+    })
+
+    api.onPostRedirect(baseUrl, '/users', {
+      name: 'Thomas'
+    }, '/users/thomas')
+
+    const discoveryResult = await Navigator.discover(baseUrl, { followRedirects: false })
+    const result = await discoveryResult.post('users', {
+      name: 'Thomas'
+    })
+
+    expect(result.status()).to.equal(201)
+
+    expect(result.getHeader('location'))
+      .to.deep.equal(`${baseUrl}/users/thomas`)
+  })
+
+  it('should be able to continue the conversation even if we do not follow redirects', async () => {
+    api.onDiscover(baseUrl, {
+      users: { href: '/users' }
+    })
+
+    api.onPostRedirect(baseUrl, '/users', {
+      name: 'Thomas'
+    }, '/users/thomas')
+
+    api.onGet(baseUrl, '/users/thomas',
+      new Resource()
+        .addProperty('name', 'Thomas'))
+
+    const discoveryResult = await Navigator.discover(baseUrl, { followRedirects: false })
+    const postResult = await discoveryResult.post('users', {
+      name: 'Thomas'
+    })
+    const result = await postResult.followRedirect()
+
+    expect(result.status()).to.equal(200)
+
+    expect(result.resource().getProperty('name'))
+      .to.deep.equal('Thomas')
+  })
 })

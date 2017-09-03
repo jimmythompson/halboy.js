@@ -4,7 +4,10 @@ import { resolveLink } from './params'
 import axiosOptions from './axiosOptions'
 
 class Navigator {
-  static defaultOptions = axiosOptions
+  static defaultOptions = {
+    ...axiosOptions,
+    followRedirects: true
+  }
 
   static discover (url, options = {}) {
     return new Navigator(options)
@@ -83,7 +86,7 @@ class Navigator {
     this._response = response
     this._resource = Resource.fromObject(responseBody)
 
-    if (status === 201) {
+    if (this.options.followRedirects && status === 201) {
       return this.followRedirect()
     }
 
