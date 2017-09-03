@@ -6,7 +6,7 @@ A library for all things hypermedia.
 
 * Create hypermedia resources
 * Marshal to and from plain JS objects
-* _Navigate JSON+HAL APIs (coming soon!)_
+* _Navigate JSON+HAL APIs
 
 ## API
 
