@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const axiosGet = (url, params) =>
-  axios.get(url)
+  axios.get(url, { params })
     .then((response) => ({
       status: response.status,
       body: response.data,

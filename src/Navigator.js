@@ -1,6 +1,6 @@
 import url from 'url'
 import Resource from './Resource'
-import { expandParams } from './params'
+import { resolveLink } from './params'
 import axiosOptions from './axiosOptions'
 
 class Navigator {
@@ -32,9 +32,12 @@ class Navigator {
 
   async get (rel, params = {}) {
     const relativeHref = this._resource.getHref(rel)
-    const expandedHref = expandParams(relativeHref, params)
+    const {
+      href: expandedHref,
+      params: queryParams
+    } = resolveLink(relativeHref, params)
     const absoluteHref = url.resolve(this._location, expandedHref)
-    return this._fetchUrl(absoluteHref, params)
+    return this._fetchUrl(absoluteHref, queryParams)
   }
 
   async _fetchUrl (url, params) {
