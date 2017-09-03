@@ -23,16 +23,20 @@
     "chai": "^4.1.0",
     "faker": "^4.1.0",
     "mocha": "^3.4.2",
+    "nock": "^9.0.14",
     "standard": "^10.0.2"
   },
   "standard": {
     "globals": [
       "describe",
-      "it"
+      "it",
+      "beforeEach"
     ],
     "parser": "babel-eslint"
   },
   "dependencies": {
-    "ramda": "^0.24.1"
+    "axios": "^0.16.2",
+    "ramda": "^0.24.1",
+    "url": "^0.11.0"
   }
 }
