@@ -97,3 +97,58 @@ Resource.fromObject(resource.toObject())
   .getHref('self')
 // '/orders/123'
 ```
+
+### Navigation
+
+Provided you're calling a HAL+JSON API, you can discover the API and navigate
+through its links. When you've found what you want, you call
+`navigator.resource()` and you get a plain old HAL resource, which you can inspect
+using any of the methods above.
+
+```js
+import { Navigator } from 'halboy'
+
+//  GET / - 200 OK
+//  {
+//   "_links": {
+//     "self": {
+//       "href": "/"
+//     },
+//     "users": {
+//       "href": "/users"
+//     },
+//     "user": {
+//       "href": "/users/{id}",
+//       "templated": true
+//     }
+//   }
+// }
+
+const discoveryResult = await Navigator.discover('https://api.example.com/')
+const usersResult = await discoveryResult.get('users')
+
+usersResult.status()
+// 200
+
+usersResult.location()
+// 'https://api.example.com/users'
+
+const robResult = await discoveryResult.get('user', {id :'rob'})
+
+robResult.location()
+// 'https://api.example.com/users/rob'
+
+const sueResult = await discoveryResult.post('user', {
+  id: 'sue',
+  name: 'Sue',
+  title: 'Dev'
+})
+
+sueResult.location()
+// 'https://api.example.com/users/sue'
+
+sueResult
+  .resource()
+  .getProperty('title')
+// 'Dev'
+```
