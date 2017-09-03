@@ -130,4 +130,37 @@ describe('Navigator', () => {
       'Mary'
     ])
   })
+
+  it('should be able to create resources in an API', async () => {
+    nock(baseUrl).get('/')
+      .reply(200,
+        new Resource()
+          .addLink('users', { href: '/users' })
+          .toObject())
+
+    nock(baseUrl)
+      .post('/users', {
+        name: 'Thomas'
+      })
+      .reply(201, undefined, {
+        Location: `${baseUrl}/users/thomas`
+      })
+
+    nock(baseUrl)
+      .get('/users/thomas')
+      .reply(200,
+        new Resource()
+          .addProperty('name', 'Thomas')
+          .toObject())
+
+    const discoveryResult = await Navigator.discover(baseUrl)
+    const result = await discoveryResult.post('users', {
+      name: 'Thomas'
+    })
+
+    expect(result.status()).to.equal(200)
+
+    expect(result.resource().getProperty('name'))
+      .to.deep.equal('Thomas')
+  })
 })

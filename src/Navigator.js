@@ -8,7 +8,7 @@ class Navigator {
 
   static discover (url, options = {}) {
     return new Navigator(options)
-      ._fetchUrl(url)
+      .getUrl(url)
   }
 
   constructor (options) {
@@ -30,23 +30,37 @@ class Navigator {
     return this._resource
   }
 
-  async get (rel, params = {}) {
-    const relativeHref = this._resource.getHref(rel)
-    const {
-      href: expandedHref,
-      params: queryParams
-    } = resolveLink(relativeHref, params)
-    const absoluteHref = url.resolve(this._location, expandedHref)
-    return this._fetchUrl(absoluteHref, queryParams)
+  getHeader (key) {
+    return this._response.headers[key]
   }
 
-  async _fetchUrl (url, params) {
+  resolveLink (rel, params) {
+    const relativeHref = this._resource.getHref(rel)
+    const { href, params: queryParams } = resolveLink(relativeHref, params)
+
+    return {
+      href: url.resolve(this._location, href),
+      queryParams
+    }
+  }
+
+  async get (rel, params = {}) {
+    const { href, queryParams } = this.resolveLink(rel, params)
+    return this.getUrl(href, queryParams)
+  }
+
+  async post (rel, body, params = {}) {
+    const { href } = this.resolveLink(rel, params)
+    return this.postUrl(href, body)
+  }
+
+  async getUrl (url, params) {
     const {
       status,
       location,
       body,
       response
-    } = await this.options.getFn(url, params)
+    } = await this.options.get(url, params)
 
     this._status = status
     this._location = location
@@ -54,6 +68,30 @@ class Navigator {
     this._resource = Resource.fromObject(body)
 
     return this
+  }
+
+  async postUrl (url, body) {
+    const {
+      status,
+      location,
+      body: responseBody,
+      response
+    } = await this.options.post(url, body)
+
+    this._status = status
+    this._location = location
+    this._response = response
+    this._resource = Resource.fromObject(responseBody)
+
+    if (status === 201) {
+      return this.followRedirect()
+    }
+
+    return this
+  }
+
+  async followRedirect () {
+    return this.getUrl(this.getHeader('location'), {})
   }
 }
 

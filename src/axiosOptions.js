@@ -9,7 +9,16 @@ const axiosGet = (url, params) =>
       response
     }))
 
+const axiosPost = (url, body) =>
+  axios.post(url, body)
+    .then((response) => ({
+      status: response.status,
+      body: response.data,
+      location: response.config.url,
+      response
+    }))
+
 module.exports = {
-  getFn: axiosGet,
-  postFn: () => {}
+  get: axiosGet,
+  post: axiosPost
 }
