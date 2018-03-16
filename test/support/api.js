@@ -8,13 +8,13 @@ export const onDiscover = (url, links) =>
         .addLinks(links)
         .toObject())
 
-export const onGet = (url, path, resource) =>
-  nock(url)
+export const onGet = (url, path, resource, headers) =>
+  nock(url, {reqheaders: headers})
     .get(path)
     .reply(200, resource.toObject())
 
-export const onPostRedirect = (url, path, body, location) =>
-  nock(url)
+export const onPostRedirect = (url, path, body, location, headers) =>
+  nock(url, {reqheaders: headers})
     .post(path, body)
     .reply(201, undefined, {
       Location: `${url}${location}`
