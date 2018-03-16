@@ -4,3 +4,6 @@ dist
 
 # OS
 .DS_Store
+
+# IDEA
+.idea
