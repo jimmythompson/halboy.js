@@ -47,23 +47,23 @@ class Navigator {
     }
   }
 
-  async get (rel, params = {}) {
+  async get (rel, params = {}, config = {}) {
     const { href, queryParams } = this.resolveLink(rel, params)
-    return this.getUrl(href, queryParams)
+    return this.getUrl(href, queryParams, config)
   }
 
-  async post (rel, body, params = {}) {
+  async post (rel, body, params = {}, config = {}) {
     const { href } = this.resolveLink(rel, params)
-    return this.postUrl(href, body)
+    return this.postUrl(href, body, config)
   }
 
-  async getUrl (url, params) {
+  async getUrl (url, params, config) {
     const {
       status,
       location,
       body,
       response
-    } = await this.options.get(url, params)
+    } = await this.options.get(url, params, config)
 
     this._status = status
     this._location = location
@@ -73,13 +73,13 @@ class Navigator {
     return this
   }
 
-  async postUrl (url, body) {
+  async postUrl (url, body, config) {
     const {
       status,
       location,
       body: responseBody,
       response
-    } = await this.options.post(url, body)
+    } = await this.options.post(url, body, config)
 
     this._status = status
     this._location = location

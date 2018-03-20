@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const axiosGet = (url, params) =>
-  axios.get(url, { params, validateStatus: () => true })
+const axiosGet = (url, params, config) =>
+  axios.get(url, { ...config, params, validateStatus: () => true })
     .then((response) => ({
       status: response.status,
       body: response.data,
@@ -9,8 +9,8 @@ const axiosGet = (url, params) =>
       response
     }))
 
-const axiosPost = (url, body) =>
-  axios.post(url, body, { validateStatus: () => true })
+const axiosPost = (url, body, config) =>
+  axios.post(url, body, { ...config, validateStatus: () => true })
     .then((response) => ({
       status: response.status,
       body: response.data,

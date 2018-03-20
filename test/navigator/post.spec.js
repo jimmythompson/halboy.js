@@ -123,4 +123,33 @@ describe('Navigator', () => {
     expect(result.resource().getProperty('name'))
       .to.deep.equal('Thomas')
   })
+
+  it('should be able to add header options for navigation', async () => {
+    api.onDiscover(baseUrl, {
+      users: { href: '/users' }
+    })
+
+    const headers = {
+      authorization: 'some-token'
+    }
+
+    api.onPostRedirect(baseUrl, '/users',
+      { name: 'Thomas' },
+      '/users/thomas',
+      { headers })
+
+    api.onGet(baseUrl, '/users/thomas',
+      new Resource()
+        .addProperty('name', 'Thomas'))
+
+    const discoveryResult = await Navigator.discover(baseUrl)
+    const result = await discoveryResult.post('users', {
+      name: 'Thomas'
+    }, {}, { headers })
+
+    expect(result.status()).to.equal(200)
+
+    expect(result.resource().getProperty('name'))
+      .to.deep.equal('Thomas')
+  })
 })
