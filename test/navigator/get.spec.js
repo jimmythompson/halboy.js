@@ -159,4 +159,37 @@ describe('Navigator', () => {
       'Mary'
     ])
   })
+
+  it('should be able to resume navigation using a stored Resource', async () => {
+    api.onGet(baseUrl, '/users',
+      new Resource()
+        .addResource('users', [
+          createUser({ id: 'fred', name: 'Fred' }),
+          createUser({ id: 'sue', name: 'Sue' }),
+          createUser({ id: 'mary', name: 'Mary' })
+        ]))
+
+    const discoveryResource = new Resource()
+      .addLinks({
+        self: { href: '/' },
+        users: { href: '/users{?admin}', templated: true }
+      })
+
+    const result = await Navigator.resume(baseUrl, discoveryResource).get('users')
+
+    expect(result.status()).to.equal(200)
+
+    const users = result
+      .resource()
+      .getResource('users')
+
+    const names = users.map((user) =>
+      user.getProperty('name'))
+
+    expect(names).to.deep.equal([
+      'Fred',
+      'Sue',
+      'Mary'
+    ])
+  })
 })

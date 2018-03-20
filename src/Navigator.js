@@ -14,6 +14,22 @@ class Navigator {
       .getUrl(url)
   }
 
+  static resume (location, resource, options = {}) {
+    return new Navigator(options)
+      ._setLocation(location)
+      ._setResource(resource)
+  }
+
+  _setResource (resource) {
+    this._resource = resource
+    return this
+  }
+
+  _setLocation (location) {
+    this._location = location
+    return this
+  }
+
   constructor (options) {
     this.options = {
       ...Navigator.defaultOptions,
