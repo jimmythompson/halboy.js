@@ -139,10 +139,10 @@ describe('Navigator', () => {
           createUser({ id: 'fred', name: 'Fred' }),
           createUser({ id: 'sue', name: 'Sue' }),
           createUser({ id: 'mary', name: 'Mary' })
-        ]), headers)
+        ]), { headers })
 
     const discoveryResult = await Navigator.discover(baseUrl)
-    const result = await discoveryResult.get('users', {}, {headers})
+    const result = await discoveryResult.get('users', {}, { headers })
 
     expect(result.status()).to.equal(200)
 

@@ -47,12 +47,12 @@ class Navigator {
     }
   }
 
-  async get (rel, params = {}, config) {
+  async get (rel, params = {}, config = {}) {
     const { href, queryParams } = this.resolveLink(rel, params)
     return this.getUrl(href, queryParams, config)
   }
 
-  async post (rel, body, params = {}, config) {
+  async post (rel, body, params = {}, config = {}) {
     const { href } = this.resolveLink(rel, params)
     return this.postUrl(href, body, config)
   }

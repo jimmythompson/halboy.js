@@ -136,7 +136,7 @@ describe('Navigator', () => {
     api.onPostRedirect(baseUrl, '/users',
       { name: 'Thomas' },
       '/users/thomas',
-      headers)
+      { headers })
 
     api.onGet(baseUrl, '/users/thomas',
       new Resource()
@@ -145,7 +145,7 @@ describe('Navigator', () => {
     const discoveryResult = await Navigator.discover(baseUrl)
     const result = await discoveryResult.post('users', {
       name: 'Thomas'
-    }, {}, {headers})
+    }, {}, { headers })
 
     expect(result.status()).to.equal(200)
 
