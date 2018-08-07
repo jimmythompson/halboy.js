@@ -17,7 +17,7 @@ describe('Navigator', () => {
     nock.cleanAll()
   })
 
-  it('should be able to navigate through links in an API', async () => {
+  it('navigates through links in an API', async () => {
     api.onDiscover(baseUrl, {
       users: {href: '/users{?admin}', templated: true}
     })
@@ -49,7 +49,7 @@ describe('Navigator', () => {
     ])
   })
 
-  it('should be able to navigate through links with query params', async () => {
+  it('navigates through links with query params', async () => {
     api.onDiscover(baseUrl, {
       users: {href: '/users{?admin}', templated: true}
     })
@@ -85,7 +85,7 @@ describe('Navigator', () => {
     ])
   })
 
-  it('should be able to navigate with a mixture of template and query params', async () => {
+  it('navigates with a mixture of template and query params', async () => {
     api.onDiscover(baseUrl, {
       friends: {href: '/users/{id}/friends{?mutual}', templated: true}
     })
@@ -124,7 +124,7 @@ describe('Navigator', () => {
     ])
   })
 
-  it('should be able to handle multiple query parameters', async () => {
+  it('navigates with multiple templated query parameters', async () => {
     api.onDiscover(baseUrl, {
       users: {href: '/users{?admin,sort}', templated: true}
     })
@@ -161,7 +161,7 @@ describe('Navigator', () => {
     ])
   })
 
-  it('should be able to add header options for navigation', async () => {
+  it('adds header options for navigation', async () => {
     api.onDiscover(baseUrl, {
       users: {href: '/users{?admin}', templated: true}
     })
@@ -197,7 +197,7 @@ describe('Navigator', () => {
     ])
   })
 
-  it('should be able to resume navigation using a stored Resource', async () => {
+  it('resumes navigation using a stored Resource', async () => {
     api.onGet(baseUrl, '/users',
       new Resource()
         .addResource('users', [

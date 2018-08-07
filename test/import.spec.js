@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Resource from '../src/Resource'
 
 describe('Resource', () => {
-  it('should parse links', () => {
+  it('parses links', () => {
     const resource = Resource.fromObject({
       _links: {
         self: {href: '/orders'}
@@ -14,7 +14,7 @@ describe('Resource', () => {
         .addLink('self', {href: '/orders'}))
   })
 
-  it('should include all information about a link', () => {
+  it('includes all information about a link', () => {
     const resource = Resource.fromObject({
       _links: {
         'ea:find': {
@@ -32,7 +32,7 @@ describe('Resource', () => {
         }))
   })
 
-  it('should parse arrays of links', () => {
+  it('parses arrays of links', () => {
     const resource = Resource.fromObject({
       _links: {
         'ea:admin': [
@@ -50,7 +50,7 @@ describe('Resource', () => {
         ]))
   })
 
-  it('should parse embedded resources', () => {
+  it('parses embedded resources', () => {
     const resource = Resource.fromObject({
       _embedded: {
         'ea:order': {
@@ -70,7 +70,7 @@ describe('Resource', () => {
             .addLink('self', { href: '/orders/123' })))
   })
 
-  it('should parse doubly embedded resources', () => {
+  it('parses doubly embedded resources', () => {
     const resource = Resource.fromObject({
       _embedded: {
         'ea:order': {
@@ -104,7 +104,7 @@ describe('Resource', () => {
         .addResource('ea:order', orderResource))
   })
 
-  it('should parse arrays of embedded resources', () => {
+  it('parses arrays of embedded resources', () => {
     const resource = Resource.fromObject({
       _embedded: {
         'ea:order': [{
@@ -137,7 +137,7 @@ describe('Resource', () => {
         ]))
   })
 
-  it('should parse properties', () => {
+  it('parses properties', () => {
     const resource = Resource.fromObject({
       total: 20.0
     })
