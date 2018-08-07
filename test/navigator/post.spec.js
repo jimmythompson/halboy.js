@@ -12,7 +12,7 @@ describe('Navigator', () => {
     nock.cleanAll()
   })
 
-  it('should be able to create resources in an API', async () => {
+  it('creates resources in an API', async () => {
     api.onDiscover(baseUrl, {
       users: { href: '/users' }
     })
@@ -36,7 +36,7 @@ describe('Navigator', () => {
       .to.deep.equal('Thomas')
   })
 
-  it('should be able to use template params when creating resources', async () => {
+  it('uses template params when creating resources', async () => {
     api.onDiscover(baseUrl, {
       useritems: { href: '/users/{id}/items', templated: true }
     })
@@ -62,7 +62,7 @@ describe('Navigator', () => {
       .to.deep.equal('Sponge')
   })
 
-  it('should not follow location headers when the status is not 201', async () => {
+  it('does not follow location headers when the status is not 201', async () => {
     api.onDiscover(baseUrl, {
       users: { href: '/users{?admin}', templated: true }
     })
@@ -79,7 +79,7 @@ describe('Navigator', () => {
     expect(result.status()).to.equal(400)
   })
 
-  it('should not follow location headers when the options say not to', async () => {
+  it('does not follow location headers when the options say not to', async () => {
     api.onDiscover(baseUrl, {
       users: { href: '/users' }
     })
@@ -99,7 +99,7 @@ describe('Navigator', () => {
       .to.deep.equal(`${baseUrl}/users/thomas`)
   })
 
-  it('should be able to continue the conversation even if we do not follow redirects', async () => {
+  it('continues the conversation even if we do not follow redirects', async () => {
     api.onDiscover(baseUrl, {
       users: { href: '/users' }
     })
@@ -124,7 +124,7 @@ describe('Navigator', () => {
       .to.deep.equal('Thomas')
   })
 
-  it('should be able to add header options for navigation', async () => {
+  it('adds header options for navigation', async () => {
     api.onDiscover(baseUrl, {
       users: { href: '/users' }
     })

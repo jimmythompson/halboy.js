@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Resource from '../src/Resource'
 
 describe('Resource', () => {
-  it('should add and fetch links', () => {
+  it('adds and fetches links when an object is used', () => {
     const resource =
       new Resource()
         .addLink('self', {href: '/orders'})
@@ -11,7 +11,7 @@ describe('Resource', () => {
       .to.deep.equal({href: '/orders'})
   })
 
-  it('should add and fetch links', () => {
+  it('adds and fetches links when a string is used', () => {
     const resource =
       new Resource()
         .addLink('self', '/orders')
@@ -20,7 +20,7 @@ describe('Resource', () => {
       .to.deep.equal({href: '/orders'})
   })
 
-  it('should stack links with the same key', () => {
+  it('stacks links with the same key', () => {
     const resource =
       new Resource()
         .addLink('ea:admin', {href: '/admins/2', title: 'Fred'})
@@ -33,7 +33,7 @@ describe('Resource', () => {
       ])
   })
 
-  it('should add multiple links at once', () => {
+  it('adds multiple links at once', () => {
     const resource =
       new Resource()
         .addLinks({
@@ -46,7 +46,7 @@ describe('Resource', () => {
       .to.equal('/baskets/98712')
   })
 
-  it('should fetch hrefs', () => {
+  it('fetches hrefs', () => {
     const resource =
       new Resource()
         .addLink('self', {href: '/orders'})
@@ -55,7 +55,7 @@ describe('Resource', () => {
       .to.deep.equal('/orders')
   })
 
-  it('should add and fetch embedded resources', () => {
+  it('adds and fetches embedded resources', () => {
     const embeddedResource =
       new Resource()
         .addLinks({
@@ -72,7 +72,7 @@ describe('Resource', () => {
       .to.deep.equal(embeddedResource)
   })
 
-  it('should add a list of a resources', () => {
+  it('adds a list of a resources', () => {
     const firstEmbeddedResource =
       new Resource()
         .addLinks({
@@ -103,7 +103,7 @@ describe('Resource', () => {
       ])
   })
 
-  it('should stack resources with under the same key', () => {
+  it('stacks resources under the same key', () => {
     const firstEmbeddedResource =
       new Resource()
         .addLinks({
@@ -144,7 +144,7 @@ describe('Resource', () => {
       ])
   })
 
-  it('should add and retrieve properties', () => {
+  it('adds and retrieves properties', () => {
     const resource =
       new Resource()
         .addProperty('currentlyProcessing', 14)
@@ -153,7 +153,7 @@ describe('Resource', () => {
       .to.equal(14)
   })
 
-  it('should add multiple properties', () => {
+  it('adds multiple properties', () => {
     const resource =
       new Resource()
         .addProperties({

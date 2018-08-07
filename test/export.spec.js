@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import Resource from '../src/Resource'
 
 describe('Resource', () => {
-  it('should export to an object', () => {
+  it('exports to an object', () => {
     const firstEmbeddedResource =
       new Resource()
         .addLinks({
@@ -126,7 +126,7 @@ describe('Resource', () => {
     })
   })
 
-  it('should render doubly embedded resources', () => {
+  it('renders doubly embedded resources', () => {
     const purchaserResource =
       new Resource()
         .addLink('self', { href: '/customers/1' })

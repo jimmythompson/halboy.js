@@ -1,4 +1,4 @@
-import url from 'url'
+import URI from 'urijs'
 import Resource from './Resource'
 import { resolveLink } from './params'
 import axiosOptions from './axiosOptions'
@@ -58,7 +58,7 @@ class Navigator {
     const { href, params: queryParams } = resolveLink(relativeHref, params)
 
     return {
-      href: url.resolve(this._location, href),
+      href: URI(href).absoluteTo(this._location).toString(),
       queryParams
     }
   }
