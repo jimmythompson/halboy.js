@@ -49,6 +49,11 @@ const objectToResources = (_embedded) => {
     ))
 }
 
+const coerceResource = (resource) =>
+  resource instanceof Resource
+  ? resource
+  : Resource.fromObject(resource)
+
 class Resource {
   static fromObject ({ _links, _embedded, ...properties }) {
     return new Resource()
@@ -107,9 +112,14 @@ class Resource {
   }
 
   addResource (key, value) {
+    const coerced =
+      Array.isArray(value)
+        ? value.map(resource => coerceResource(resource))
+        : coerceResource(value)
+
     this.embedded = {
       ...this.embedded,
-      [key]: createOrAppend(this.embedded[key], value)
+      [key]: createOrAppend(this.embedded[key], coerced)
     }
 
     return this

@@ -161,4 +161,36 @@ describe('Resource', () => {
       }
     })
   })
+
+  it('preserves objects that are not Resources', () => {
+    const purchaserResource = {
+      name: 'Sue'
+    }
+
+    const orderResource =
+      new Resource()
+        .addResource('customer', purchaserResource)
+        .addLink('self', { href: '/orders/123' })
+
+    const resource =
+      new Resource()
+        .addResource('ea:order', orderResource)
+
+    expect(resource.toObject()).to.deep.equal({
+      _embedded: {
+        'ea:order': {
+          _links: {
+            self: {
+              href: '/orders/123'
+            }
+          },
+          _embedded: {
+            customer: {
+              name: 'Sue'
+            }
+          }
+        }
+      }
+    })
+  })
 })
