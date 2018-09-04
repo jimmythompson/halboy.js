@@ -6,7 +6,7 @@ A library for all things hypermedia.
 
 * Create hypermedia resources
 * Marshal to and from plain JS objects
-* _Navigate JSON+HAL APIs
+* Navigate JSON+HAL APIs
 
 ## API
 
@@ -21,7 +21,7 @@ const discountResource =
   new Resource()
     .addLink('self', '/discounts/1256')
     .addProperty('discountPercentage', 10)
-    
+
 const itemResources = [
   new Resource()
     .addLink('self', '/items/534')
@@ -35,7 +35,7 @@ const resource =
       .addResource('discount', discountResource)
       .addResource('items', itemResources)
       .addProperty('state', 'dispatching')
-      
+
 resource.getLink('self')
 // { href: '/orders/123' }
 
@@ -87,7 +87,7 @@ resource.toObject()
 //       _links: {
 //         self: { href: '/items/534' }
 //       },
-//       price: 25.48 
+//       price: 25.48
 //     }]
 //   },
 //   state: 'dispatching'
