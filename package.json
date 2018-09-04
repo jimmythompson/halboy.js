@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "lint": "standard",
-    "test": "mocha --require babel-polyfill --compilers babel-core/register --recursive \"test/**/*.spec.js\"",
+    "test": "mocha --require babel-polyfill --require babel-core/register --recursive \"test/**/*.spec.js\"",
     "prepublish": "npm run build"
   },
   "author": "",
@@ -22,7 +22,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.0",
     "faker": "^4.1.0",
-    "mocha": "^3.4.2",
+    "mocha": "^5.2.0",
     "nock": "^9.6.1",
     "standard": "^10.0.2"
   },
