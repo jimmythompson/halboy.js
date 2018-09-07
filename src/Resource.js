@@ -1,4 +1,4 @@
-import { isEmpty, fromPairs, toPairs } from 'ramda'
+import { isEmpty, fromPairs, toPairs, prop } from 'ramda'
 
 const flatten = (arr) =>
   arr.reduce((result, next) =>
@@ -69,11 +69,11 @@ class Resource {
   }
 
   getLink (rel) {
-    return this.links[rel]
+    return prop(rel, this.links)
   }
 
   getHref (rel) {
-    return this.getLink(rel).href
+    return prop('href', this.getLink(rel) || {})
   }
 
   getResource (key) {

@@ -55,6 +55,11 @@ class Navigator {
 
   resolveLink (rel, params) {
     const relativeHref = this._resource.getHref(rel)
+
+    if (!relativeHref) {
+      throw new Error(`Attempting to follow the link '${rel}', which does not exist`)
+    }
+
     const { href, params: queryParams } = resolveLink(relativeHref, params)
 
     return {

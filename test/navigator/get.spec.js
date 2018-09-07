@@ -1,9 +1,12 @@
 import faker from 'faker'
 import nock from 'nock'
-import { expect } from 'chai'
+import chai, { expect, should } from 'chai'
 import Resource from '../../src/Resource'
 import Navigator from '../../src/Navigator'
 import * as api from '../support/api'
+import chaiAsPromised from 'chai-as-promised';
+
+chai.use(chaiAsPromised);
 
 const baseUrl = faker.internet.url()
 
@@ -306,5 +309,17 @@ describe('Navigator', () => {
       'Sue',
       'Mary'
     ])
+  })
+
+  it('throws an exception when trying to get a link that does not exist', async () => {
+    api.onDiscover(baseUrl, {})
+
+    return expect(
+      Navigator.discover(baseUrl)
+        .then(result => result.get('users'))
+      ).to.eventually.be.rejectedWith(
+        Error,
+        'Attempting to follow the link \'users\', which does not exist'
+      )
   })
 })
