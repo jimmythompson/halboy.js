@@ -1,4 +1,4 @@
-import { isEmpty, fromPairs, toPairs, prop } from 'ramda'
+import { isEmpty, toPairs, prop, map, reject, isNil, pipe, defaultTo } from 'ramda'
 
 const flatten = (arr) =>
   arr.reduce((result, next) =>
@@ -10,16 +10,15 @@ const createOrAppend = (left, right) =>
   left ? flatten([left, right]) : right
 
 const resourcesToObject = (resources) => {
-  if (isEmpty(resources)) {
+  if (!resources || isEmpty(resources)) {
     return {}
   }
 
-  const transformedResources = fromPairs(toPairs(resources)
-    .map(([key, value]) =>
-      Array.isArray(value)
-        ? [key, value.map(v => v.toObject())]
-        : [key, value.toObject()]
-    ))
+  const transformedResources = map((value) => {
+    return Array.isArray(value)
+      ? value.map(v => v.toObject())
+      : value.toObject()
+  }, resources)
 
   return {_embedded: transformedResources}
 }
@@ -37,16 +36,15 @@ const objectToLinks = (_links) => {
 }
 
 const objectToResources = (_embedded) => {
-  if (isEmpty(_embedded)) {
+  if (!_embedded || isEmpty(_embedded)) {
     return {}
   }
 
-  return fromPairs(toPairs(_embedded)
-    .map(([key, value]) =>
-      Array.isArray(value)
-        ? [key, value.map(v => Resource.fromObject(v))]
-        : [key, Resource.fromObject(value)]
-    ))
+  return map((value) => {
+    return Array.isArray(value)
+      ? value.map(v => Resource.fromObject(v))
+      : Resource.fromObject(value)
+  }, _embedded)
 }
 
 const coerceResource = (resource) =>
@@ -76,8 +74,26 @@ class Resource {
     return prop('href', this.getLink(rel) || {})
   }
 
+  getLinks () {
+    return this.links
+  }
+
+  getHrefs () {
+    return pipe(
+      map(pipe(
+        defaultTo({}),
+        prop('href'))
+      ),
+      reject(isNil)
+    )(this.links)
+  }
+
   getResource (key) {
     return this.embedded[key]
+  }
+
+  getResources () {
+    return this.embedded
   }
 
   getProperty (key) {
@@ -89,6 +105,10 @@ class Resource {
   }
 
   addLink (rel, value) {
+    if (!value) {
+      return this
+    }
+
     if (typeof value === 'string') {
       return this.addLink(rel, { href: value })
     }
