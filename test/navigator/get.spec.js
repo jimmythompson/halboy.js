@@ -1,12 +1,12 @@
 import faker from 'faker'
 import nock from 'nock'
-import chai, { expect, should } from 'chai'
+import chai, { expect } from 'chai'
 import Resource from '../../src/Resource'
 import Navigator from '../../src/Navigator'
 import * as api from '../support/api'
-import chaiAsPromised from 'chai-as-promised';
+import chaiAsPromised from 'chai-as-promised'
 
-chai.use(chaiAsPromised);
+chai.use(chaiAsPromised)
 
 const baseUrl = faker.internet.url()
 
