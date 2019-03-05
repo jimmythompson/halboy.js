@@ -21,7 +21,7 @@ describe('Navigator', () => {
   })
 
   it('navigates through links in an API', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: {href: '/users{?admin}', templated: true}
     })
 
@@ -53,7 +53,7 @@ describe('Navigator', () => {
   })
 
   it('navigates through links with query params', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: {href: '/users{?admin}', templated: true}
     })
 
@@ -89,7 +89,7 @@ describe('Navigator', () => {
   })
 
   it('navigates with a mixture of template and query params', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       friends: {href: '/users/{id}/friends{?mutual}', templated: true}
     })
 
@@ -128,7 +128,7 @@ describe('Navigator', () => {
   })
 
   it('navigates with multiple templated query parameters', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: {href: '/users{?admin,sort}', templated: true}
     })
 
@@ -165,7 +165,7 @@ describe('Navigator', () => {
   })
 
   it('navigates with templated list query parameters', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: {href: '/users{?ids*}', templated: true}
     })
 
@@ -203,7 +203,7 @@ describe('Navigator', () => {
 
   it('retains superfluous parameters after templating as query parameters',
     async () => {
-      api.onDiscover(baseUrl, {
+      api.onDiscover(baseUrl, {}, {
         friends: {href: '/users/{id}/friends{?mutual}', templated: true}
       })
 
@@ -243,7 +243,7 @@ describe('Navigator', () => {
     })
 
   it('adds header options for navigation', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: {href: '/users{?admin}', templated: true}
     })
 
@@ -312,7 +312,7 @@ describe('Navigator', () => {
   })
 
   it('throws an exception when trying to get a link that does not exist', async () => {
-    api.onDiscover(baseUrl, {})
+    api.onDiscover(baseUrl, {}, {})
 
     return expect(
       Navigator.discover(baseUrl)

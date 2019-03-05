@@ -11,7 +11,7 @@ class Navigator {
 
   static discover (url, options = {}) {
     return new Navigator(options)
-      .getUrl(url)
+      .getUrl(url, {}, options.http)
   }
 
   static resume (location, resource, options = {}) {
