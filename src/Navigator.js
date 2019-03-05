@@ -9,9 +9,9 @@ class Navigator {
     followRedirects: true
   }
 
-  static discover (url, options = {}) {
+  static discover (url, options = {}, config = {}) {
     return new Navigator(options)
-      .getUrl(url)
+      .getUrl(url, {}, config)
   }
 
   static resume (location, resource, options = {}) {
