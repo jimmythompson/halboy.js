@@ -1,7 +1,7 @@
 import nock from 'nock'
 import Resource from '../../src/Resource'
 
-export const onDiscover = (url, links, { headers } = {}) =>
+export const onDiscover = (url, { headers } = {}, links = {}) =>
   nock(url, { reqheaders: headers }).get('/')
     .reply(200,
       new Resource()

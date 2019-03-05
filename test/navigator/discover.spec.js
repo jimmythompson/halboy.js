@@ -21,13 +21,13 @@ describe('Navigator', () => {
 
     const href = '/users{?admin}'
 
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {headers}, {
       users: {href}
-    }, {
-      headers
     })
 
-    const discoveryResult = await Navigator.discover(baseUrl, {}, {headers})
+    const discoveryResult = await Navigator.discover(baseUrl, {
+      http: {headers}
+    })
 
     expect(discoveryResult.status()).to.equal(200)
 

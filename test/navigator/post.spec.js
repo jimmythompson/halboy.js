@@ -13,7 +13,7 @@ describe('Navigator', () => {
   })
 
   it('creates resources in an API', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: { href: '/users' }
     })
 
@@ -37,7 +37,7 @@ describe('Navigator', () => {
   })
 
   it('uses template params when creating resources', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       useritems: { href: '/users/{id}/items', templated: true }
     })
 
@@ -63,7 +63,7 @@ describe('Navigator', () => {
   })
 
   it('does not follow location headers when the status is not 201', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: { href: '/users{?admin}', templated: true }
     })
 
@@ -80,7 +80,7 @@ describe('Navigator', () => {
   })
 
   it('does not follow location headers when the options say not to', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: { href: '/users' }
     })
 
@@ -100,7 +100,7 @@ describe('Navigator', () => {
   })
 
   it('continues the conversation even if we do not follow redirects', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: { href: '/users' }
     })
 
@@ -125,7 +125,7 @@ describe('Navigator', () => {
   })
 
   it('adds header options for navigation', async () => {
-    api.onDiscover(baseUrl, {
+    api.onDiscover(baseUrl, {}, {
       users: { href: '/users' }
     })
 
