@@ -111,15 +111,16 @@ class Navigator {
     this._resource = Resource.fromObject(responseBody)
 
     if (this.options.followRedirects && status === 201) {
-      return this.followRedirect()
+      return this.followRedirect(config)
     }
 
     return this
   }
 
-  async followRedirect () {
-    return this.getUrl(
-      makeAbsolute(this._location, this.getHeader('location')), {})
+  async followRedirect (config) {
+    const fullLocation = makeAbsolute(
+      this._location, this.getHeader('location'))
+    return this.getUrl(fullLocation, {}, config)
   }
 }
 
