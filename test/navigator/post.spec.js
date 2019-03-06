@@ -14,7 +14,7 @@ describe('Navigator', () => {
 
   it('creates resources in an API', async () => {
     api.onDiscover(baseUrl, {}, {
-      users: { href: '/users' }
+      users: {href: '/users'}
     })
 
     api.onPostRedirect(baseUrl, '/users', {
@@ -38,7 +38,7 @@ describe('Navigator', () => {
 
   it('uses template params when creating resources', async () => {
     api.onDiscover(baseUrl, {}, {
-      useritems: { href: '/users/{id}/items', templated: true }
+      useritems: {href: '/users/{id}/items', templated: true}
     })
 
     api.onPostRedirect(baseUrl, '/users/thomas/items', {
@@ -64,7 +64,7 @@ describe('Navigator', () => {
 
   it('uses absolute url when location is relative', async () => {
     api.onDiscover(baseUrl, {}, {
-      users: { href: '/users' }
+      users: {href: '/users'}
     })
 
     api.onPostRedirect(baseUrl, '/users', {
@@ -86,13 +86,46 @@ describe('Navigator', () => {
       .to.deep.equal('Thomas')
   })
 
+  it('uses same configuration as provided on post when following redirect',
+    async () => {
+      api.onDiscover(baseUrl, {}, {
+        users: {href: '/users'}
+      })
+
+      api.onPostRedirect(baseUrl, '/users', {
+        name: 'Thomas'
+      },
+      `${baseUrl}/users/thomas`, {
+        headers: { authorization: 'Bearer 1a2b3c4d' }
+      })
+
+      api.onGet(baseUrl, '/users/thomas',
+        new Resource().addProperty('name', 'Thomas'), {
+          headers: { authorization: 'Bearer 1a2b3c4d' }
+        })
+
+      const discoveryResult = await Navigator.discover(baseUrl)
+      const result = await discoveryResult.post('users', {
+        name: 'Thomas'
+      }, {}, {
+        headers: {
+          authorization: 'Bearer 1a2b3c4d'
+        }
+      })
+
+      expect(result.status()).to.equal(200)
+
+      expect(result.resource().getProperty('name'))
+        .to.deep.equal('Thomas')
+    })
+
   it('does not follow location headers when the status is not 201', async () => {
     api.onDiscover(baseUrl, {}, {
-      users: { href: '/users{?admin}', templated: true }
+      users: {href: '/users{?admin}', templated: true}
     })
 
     nock(baseUrl)
-      .post('/users', { name: 'Thomas' })
+      .post('/users', {name: 'Thomas'})
       .reply(400)
 
     const discoveryResult = await Navigator.discover(baseUrl)
@@ -105,14 +138,14 @@ describe('Navigator', () => {
 
   it('does not follow location headers when the options say not to', async () => {
     api.onDiscover(baseUrl, {}, {
-      users: { href: '/users' }
+      users: {href: '/users'}
     })
 
     api.onPostRedirect(baseUrl, '/users', {
       name: 'Thomas'
     }, `${baseUrl}/users/thomas`)
 
-    const discoveryResult = await Navigator.discover(baseUrl, { followRedirects: false })
+    const discoveryResult = await Navigator.discover(baseUrl, {followRedirects: false})
     const result = await discoveryResult.post('users', {
       name: 'Thomas'
     })
@@ -125,7 +158,7 @@ describe('Navigator', () => {
 
   it('continues the conversation even if we do not follow redirects', async () => {
     api.onDiscover(baseUrl, {}, {
-      users: { href: '/users' }
+      users: {href: '/users'}
     })
 
     api.onPostRedirect(baseUrl, '/users', {
@@ -136,7 +169,7 @@ describe('Navigator', () => {
       new Resource()
         .addProperty('name', 'Thomas'))
 
-    const discoveryResult = await Navigator.discover(baseUrl, { followRedirects: false })
+    const discoveryResult = await Navigator.discover(baseUrl, {followRedirects: false})
     const postResult = await discoveryResult.post('users', {
       name: 'Thomas'
     })
@@ -150,7 +183,7 @@ describe('Navigator', () => {
 
   it('adds header options for navigation', async () => {
     api.onDiscover(baseUrl, {}, {
-      users: { href: '/users' }
+      users: {href: '/users'}
     })
 
     const headers = {
@@ -158,9 +191,9 @@ describe('Navigator', () => {
     }
 
     api.onPostRedirect(baseUrl, '/users',
-      { name: 'Thomas' },
+      {name: 'Thomas'},
       `${baseUrl}/users/thomas`,
-      { headers })
+      {headers})
 
     api.onGet(baseUrl, '/users/thomas',
       new Resource()
@@ -169,7 +202,7 @@ describe('Navigator', () => {
     const discoveryResult = await Navigator.discover(baseUrl)
     const result = await discoveryResult.post('users', {
       name: 'Thomas'
-    }, {}, { headers })
+    }, {}, {headers})
 
     expect(result.status()).to.equal(200)
 
