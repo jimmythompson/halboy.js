@@ -17,5 +17,5 @@ export const onPostRedirect = (url, path, body, location, { headers } = {}) =>
   nock(url, { reqheaders: headers })
     .post(path, body)
     .reply(201, undefined, {
-      Location: `${url}${location}`
+      Location: location
     })
