@@ -19,7 +19,7 @@ describe('Navigator', () => {
 
     api.onPostRedirect(baseUrl, '/users', {
       name: 'Thomas'
-    }, '/users/thomas')
+    }, `${baseUrl}/users/thomas`)
 
     api.onGet(baseUrl, '/users/thomas',
       new Resource()
@@ -43,7 +43,7 @@ describe('Navigator', () => {
 
     api.onPostRedirect(baseUrl, '/users/thomas/items', {
       name: 'Sponge'
-    }, '/users/thomas/items/1')
+    }, `${baseUrl}/users/thomas/items/1`)
 
     api.onGet(baseUrl, '/users/thomas/items/1',
       new Resource()
@@ -60,6 +60,30 @@ describe('Navigator', () => {
 
     expect(result.resource().getProperty('name'))
       .to.deep.equal('Sponge')
+  })
+
+  it('uses absolute url when location is relative', async () => {
+    api.onDiscover(baseUrl, {}, {
+      users: { href: '/users' }
+    })
+
+    api.onPostRedirect(baseUrl, '/users', {
+      name: 'Thomas'
+    }, `/users/thomas`)
+
+    api.onGet(baseUrl, '/users/thomas',
+      new Resource()
+        .addProperty('name', 'Thomas'))
+
+    const discoveryResult = await Navigator.discover(baseUrl)
+    const result = await discoveryResult.post('users', {
+      name: 'Thomas'
+    })
+
+    expect(result.status()).to.equal(200)
+
+    expect(result.resource().getProperty('name'))
+      .to.deep.equal('Thomas')
   })
 
   it('does not follow location headers when the status is not 201', async () => {
@@ -86,7 +110,7 @@ describe('Navigator', () => {
 
     api.onPostRedirect(baseUrl, '/users', {
       name: 'Thomas'
-    }, '/users/thomas')
+    }, `${baseUrl}/users/thomas`)
 
     const discoveryResult = await Navigator.discover(baseUrl, { followRedirects: false })
     const result = await discoveryResult.post('users', {
@@ -106,7 +130,7 @@ describe('Navigator', () => {
 
     api.onPostRedirect(baseUrl, '/users', {
       name: 'Thomas'
-    }, '/users/thomas')
+    }, `${baseUrl}/users/thomas`)
 
     api.onGet(baseUrl, '/users/thomas',
       new Resource()
@@ -135,7 +159,7 @@ describe('Navigator', () => {
 
     api.onPostRedirect(baseUrl, '/users',
       { name: 'Thomas' },
-      '/users/thomas',
+      `${baseUrl}/users/thomas`,
       { headers })
 
     api.onGet(baseUrl, '/users/thomas',

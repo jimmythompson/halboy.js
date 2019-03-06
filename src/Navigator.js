@@ -3,6 +3,9 @@ import Resource from './Resource'
 import { resolveLink } from './params'
 import axiosOptions from './axiosOptions'
 
+const makeAbsolute = (baseUri, relativeUri) =>
+  URI(relativeUri).absoluteTo(baseUri).toString()
+
 class Navigator {
   static defaultOptions = {
     ...axiosOptions,
@@ -63,7 +66,7 @@ class Navigator {
     const { href, params: queryParams } = resolveLink(relativeHref, params)
 
     return {
-      href: URI(href).absoluteTo(this._location).toString(),
+      href: makeAbsolute(this._location, href),
       queryParams
     }
   }
@@ -115,7 +118,8 @@ class Navigator {
   }
 
   async followRedirect () {
-    return this.getUrl(this.getHeader('location'), {})
+    return this.getUrl(
+      makeAbsolute(this._location, this.getHeader('location')), {})
   }
 }
 
