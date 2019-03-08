@@ -19,3 +19,10 @@ export const onPostRedirect = (url, path, body, location, { headers } = {}) =>
     .reply(201, undefined, {
       Location: location
     })
+
+export const onPatchRedirect = (url, path, body, location, { headers } = {}) =>
+  nock(url, { reqheaders: headers })
+    .patch(path, body)
+    .reply(204, undefined, {
+      Location: location
+    })
