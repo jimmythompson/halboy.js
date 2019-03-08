@@ -18,7 +18,17 @@ const axiosPost = (url, body, config) =>
       response
     }))
 
+const axiosPatch = (url, body, config) =>
+  axios.patch(url, body, { ...config, validateStatus: () => true })
+    .then((response) => ({
+      status: response.status,
+      body: response.data,
+      location: response.config.url,
+      response
+    }))
+
 module.exports = {
   get: axiosGet,
-  post: axiosPost
+  post: axiosPost,
+  patch: axiosPatch
 }
