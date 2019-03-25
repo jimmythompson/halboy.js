@@ -20,9 +20,26 @@ export const onPostRedirect = (url, path, body, location, { headers } = {}) =>
       Location: location
     })
 
+export const onPutToReplace = (url, path, body, { headers } = {}) =>
+  nock(url, { reqheaders: headers })
+    .put(path, body)
+    .reply(200, body)
+
+export const onPutToCreate = (url, path, body, location, { headers } = {}) =>
+  nock(url, { reqheaders: headers })
+    .put(path, body)
+    .reply(201, undefined, {
+      Location: location
+    })
+
 export const onPatchRedirect = (url, path, body, location, { headers } = {}) =>
   nock(url, { reqheaders: headers })
     .patch(path, body)
     .reply(204, undefined, {
       Location: location
     })
+
+export const onDelete = (url, path, body, { headers } = {}) =>
+  nock(url, { reqheaders: headers })
+    .delete(path, body)
+    .reply(204)

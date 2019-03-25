@@ -81,9 +81,19 @@ class Navigator {
     return this.postUrl(href, body, config)
   }
 
+  async put (rel, body, params = {}, config = {}) {
+    const { href } = this.resolveLink(rel, params)
+    return this.putUrl(href, body, config)
+  }
+
   async patch (rel, body, params = {}, config = {}) {
     const { href } = this.resolveLink(rel, params)
     return this.patchUrl(href, body, config)
+  }
+
+  async delete (rel, body, params = {}, config = {}) {
+    const { href } = this.resolveLink(rel, params)
+    return this.deleteUrl(href, body, config)
   }
 
   async getUrl (url, params, config) {
@@ -122,6 +132,26 @@ class Navigator {
     return this
   }
 
+  async putUrl (url, body, config) {
+    const {
+      status,
+      location,
+      body: responseBody,
+      response
+    } = await this.options.put(url, body, config)
+
+    this._status = status
+    this._location = location
+    this._response = response
+    this._resource = Resource.fromObject(responseBody)
+
+    if (this.options.followRedirects && status === 201) {
+      return this.followRedirect(config)
+    }
+
+    return this
+  }
+
   async patchUrl (url, body, config) {
     const {
       status,
@@ -138,6 +168,22 @@ class Navigator {
     if (this.options.followRedirects && status === 204) {
       return this.followRedirect(config)
     }
+
+    return this
+  }
+
+  async deleteUrl (url, body, config) {
+    const {
+      status,
+      location,
+      body: responseBody,
+      response
+    } = await this.options.delete(url, body, config)
+
+    this._status = status
+    this._location = location
+    this._response = response
+    this._resource = Resource.fromObject(responseBody)
 
     return this
   }
