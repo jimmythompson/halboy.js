@@ -36,7 +36,7 @@
     "parser": "babel-eslint"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.21.2",
     "ramda": "^0.24.1",
     "urijs": "^1.19.1"
   }
